@@ -1,13 +1,13 @@
 
 
-This document is intended to provide a `docker-compose` of the Docker Containers that I have TRIED but NOT used on my Synology DS1513+/Mini-PC home server, as I did not find any use for me. If you are using a different device, that should be fine as well, just make sure you define the `$PERSIST` location in your `.env` file that corresponds to the docker folder on your host device.
+This document is intended to provide a `docker-compose` of the Docker Containers that I have TRIED but NOT used on my Synology DS1513+ and 2 Mini PCs as my home server, as I did not find any use for me. If you are using a different device, that should be fine as well, just make sure you define the `$PERSIST` location in your `.env` file that corresponds to the docker folder on your host device.
 
-If you are not familiar with how to use a compose file, you can change the compose to docker CLI command by using a [docker-compose Converter](https://bucherfa.github.io/dcc-web/)
+If you are not familiar by how to use a compose file, you can change the compose to docker CLI command by using a [docker-compose Converter](https://bucherfa.github.io/dcc-web/)
  
 
 Below are some ports that I have found to be reserved and cannot be used on my host, I always avoid using them
 
-##### A CONSOLIDATED `unused-docker-compose.yml` FILE CAN BE FOUND [HERE](unused-docker-compose.yml) , AND TO START, JUST RENAME THE FILE TO _`docker-compose.yml`_ and TYPE IN `docker-compose up -d` AND ALL CONTAINERS WILL START. NOTE THAT SOME CONTAINERS REQUIRES CONFIGURATION BEFORE STARTING, AS WELL AS MAKING SURE ALL REQUIRED FOLDERS ARE CREATED ON THE HOST MACHINE WITH THE CORRESPONDING NAMES AS IN THE COMPOSE 
+##### A CONSOLIDATED `unused-docker-compose.yml` FILE CAN BE FOUND [HERE](unused-docker-compose.yml) , AND TO START, JUST RENAME THE FILE TO _`docker-compose.yml`_ and TYPE IN `docker-compose up -d` AND ALL CONTAINERS WILL START. NOTE THAT SOME CONTAINERS REQUIRES CONFIGURATION BEFORE STARTING, AS WELL AS MAKING SURE ALL REQUIRED FOLDERS ARE CREATED ON THE HOST MACHINE by THE CORRESPONDING NAMES AS IN THE COMPOSE 
 
 
  #### _RESERVED PORTS NOT BE USED IN ANY CONTAINER_
@@ -29,142 +29,172 @@ Below are some ports that I have found to be reserved and cannot be used on my h
 </details>
 
 
+
+
 # DATABASES
- 
-| Container                                                       | Port       | Description                                        | Docker Image                         |
-| :------------                                                   | :----      | :-------                                           | :---                                 |
-| <a href="#2fauth-redis">2FAuth-Redis</a>                        | 6378       | Used for 2FAuth                                    | `redis:alpine`                       |
-| <a href="#chatvault-postgres">Chatvault-Postgres</a>            | -          | Used for Chatvault                                 | `postgres:alpine`                    |
-| <a href="#grafana">Grafana</a>                                  | 3003       | An open observability platform                     | `grafana/grafana:main`               |
-| <a href="#joplindb">JoplinDB</a>                                | -          | Used for Joplin                                    | `postgres:13.1`                      |
-| <a href="#our-shopping-list-db">Our Shopping List-DB</a>        | 27017      | Used for Our Shopping List                         | `pmongo:4.0`                         |
-| <a href="#phpmyadmin">phpMyAdmin</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#adminer">Adminer</a>                              | 3300       | UI interface to view self-hosted DBs               | `phpmyadmin/phpmyadmin:latest`       |
-| <a href="#phlare ">Phlare </a>                                  | 4100       | Continuous observability for workload's resources  | `grafana/phlare:latest`              |
-| <a href="#photoview-postgress">Photoview-Postgress</a>          | -          | Used for Photoview                                 | `postgres:alpine`                    |
-| <a href="#piped-postgres">Piped-Postgres</a>                    | -          | Used for Piped                                     | `postgres:alpine`                    |
-| <a href="#piwigo-db ">Piwigo-DB</a>                             | -          | Used for Piwigo                                    | `jbergstroem/mariadb-alpine:10.6.13` |
-| <a href="#prometheus">Prometheus</a>                            | 9090       | Systems and service monitoring system              | `prom/prometheus:latest`             |
+
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#2fauth-redis">2FAuth-Redis</a>                        | 6378          | Used for 2FAuth                                                   | `redis:alpine`                                  |
+| <a href="#adminer">Adminer</a>                                  | 3330          | Full-featured database management tool                            | `adminer:latest`                                |
+| <a href="#chatvault-postgres">Chatvault-Postgres</a>            | -             | Used for Chatvault                                                | `postgres:alpine`                               |
+| <a href="#endurain-postgres">Endurain-Postgres</a>              | -             | Used for FocalBoard                                               | `postgres:16-alpine`                            |
+| <a href="#focalboard-postgres">FocalBoard-Postgres</a>          | -             | Used for FocalBoard                                               | `postgres:alpine`                               |
+| <a href="#grafana">Grafana</a>                                  | 3003          | An open observability platform                                    | `grafana/grafana:main`                          |
+| <a href="#jellystat-postgres">JellyStat-Postgres</a>            | -             | Used for JellyStat                                                | `postgres:15.2`                                 |
+| <a href="#joplindb">JoplinDB</a>                                | -             | Used for Joplin                                                   | `postgres:13.1`                                 |
+| <a href="#lidarr-postgres">Lidarr-Postgres</a>                  | -             | Used for Lidarr-Postgres                                          | `postgres:18-alpine`                            |
+| <a href="#our-shopping-list-db">Our Shopping List-DB</a>        | 27017         | Used for Our Shopping List                                        | `pmongo:4.0`                                    |
+| <a href="#phpmyadmin">phpMyAdmin</a>                            | 3300          | UI interface to view self-hosted DBs                              | `phpmyadmin/phpmyadmin:latest`                  |
+| <a href="#phlare ">Phlare </a>                                  | 4100          | Continuous observability for workload's resources                 | `grafana/phlare:latest`                         |
+| <a href="#photoview-postgress">Photoview-Postgress</a>          | -             | Used for Photoview                                                | `postgres:alpine`                               |
+| <a href="#piped-postgres">Piped-Postgres</a>                    | -             | Used for Piped                                                    | `postgres:alpine`                               |
+| <a href="#piwigo-db ">Piwigo-DB</a>                             | -             | Used for Piwigo                                                   | `jbergstroem/mariadb-alpine:10.6.13`            |
+| <a href="#prometheus">Prometheus</a>                            | 9090          | Systems and service monitoring system                             | `prom/prometheus:latest`                        |
 
 
 
 # DOCKER RELATED
 
-| Container                                                       | Port       | Description                                        | Docker Image                         |
-| :------------                                                   | :----      | :-------                                                 | :---                           |
-| <a href="#alertmanager">AlertManager</a>                        | 9093       | Handles alerts sent by client applications (Prometheus)  | `prom/alertmanager:latest`     |
-| <a href="#auto-heal">Autoheal</a>                                  | -               | Monitor and restart unhealthy docker containers      | `modem7/docker-autoheal:latest`        |
-| <a href="#broadlinkmanager">BroadLinkManager</a>                | 7020       | Helps to work with Broadlink Devices                     | `techblog/broadlinkmanager:latest` |
-| <a href="#cadvisor">cAdvisor</a>                                | 8888       | Analyzes resource usage and performance of running containers | `gcr.io/cadvisor/cadvisor:latest` |
-| <a href="#checkmk">CheckMK</a>                                  | 8722       | Powerful monitoring of networks, servers, containers     | `checkmk/check-mk-raw:latest`  |
-| <a href="#container-mon">Container-Mon</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#monocker">Monocker</a>                      | -          | Get notified when a Docker containers are unhealthy      | `ghcr.io/rafhaanshah/container-mon:latest`                     |
-| <a href="#decompose">DeCompose</a>                              | 4321       | Generates docker-compose file from existing containers   | `techblog/decompose:latest`    |
-| <a href="#deunhealth">DeUnHealth</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#auto-heal">Autoheal</a>                           | -          | Restarts unhealthy containers                            | `qmcgaw/deunhealth:latest`     |
-| <a href="#dockge">DockGE</a>                                    | 6001       | Easy-to-use self-hosted docker compose.yaml manager      | `louislam/dockge:1`            |
-| <a href="#glances">Glances</a>                                  | 61208      | Cross-platform monitoring tool                           | `joweisberg/glances:latest`    |
-| <a href="#node-exporter">Node-Exporter</a>                      | 9091       | Prometheus exporter for machine metrics                  | `prom/node-exporter:latest`    |
-| <a href="#ouroboros">Ouroboros</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#watchtower">WatchTower</a>                               | -          | Update containers with latest images                     | `pyouroboros/ouroboros:latest` |
-| <a href="#portainer-ce">Portainer-CE</a>  ----  Personally replaced with `portainer/portainer-ee:alpine`                        | 9000,9443,8000 | Docker management tool (FREE Community Edition)      | `portainer/portainer-ce:alpine` |
-| <a href="#tls-socket-proxy">TLS-Socket-Proxy</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#socket-proxy">Docker Socket Proxy                | 2376       | A security-enhanced proxy for the Docker Socket with TLS | `sjawhar/docker-socket-proxy:latest` |
-| <a href="#container-webtty">Container-WebTTY</a>                   | 8818,8090       | SContainer WebTTY terminal access                    | `wrfly/container-web-tty:0.1.10`       |
-| <a href="#whatsupdocker">WhatsUpDocker</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#watchtower">WatchTower                      | 3000       | Same as WatchTower but with UI and actions               | `fmartinou/whats-up-docker:latest` |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#alertmanager">AlertManager</a>                        | 9093          | Handles alerts sent by client applications (Prometheus)           | `prom/alertmanager:latest`                      |
+| <a href="#auto-heal">Autoheal</a>                               | -             | Monitor and restart unhealthy docker containers                   | `modem7/docker-autoheal:latest`                 |
+| <a href="#broadlinkmanager">BroadLinkManager</a>                | 7020          | Helps to work by Broadlink Devices                                | `techblog/broadlinkmanager:latest`              |
+| <a href="#cadvisor">cAdvisor</a>                                | 8888          | Analyzes resource usage and performance of running containers     | `gcr.io/cadvisor/cadvisor:latest`               |
+| <a href="#checkmk">CheckMK</a>                                  | 8722          | Powerful monitoring of networks, servers, containers              | `checkmk/check-mk-raw:latest`                   |
+| <a href="#container-mon">Container-Mon</a>                      | -             | Get notified when a Docker containers are unhealthy               | `ghcr.io/rafhaanshah/container-mon:latest`      |
+| <a href="#decompose">DeCompose</a>                              | 4321          | Generates docker-compose file from existing containers            | `techblog/decompose:latest`                     |
+| <a href="#deunhealth">DeUnHealth</a>                            | -             | Restarts unhealthy containers                                     | `qmcgaw/deunhealth:latest`                      |
+| <a href="#docker-volume-backup">Docker Volume Backup</a>        | -             | Backup Docker volumes locally or to any compatible storage        | `offen/docker-volume-backup:latest`             |
+| <a href="#dockge">DockGE</a>                                    | 6001          | Easy-to-use self-hosted docker compose.yaml manager               | `louislam/dockge:1`                             |
+| <a href="#dozzle">Dozzle</a>                                    | 9900          | Container log aggregator                                          | `pamir20/dozzle:latest`                         |
+| <a href="#duplicati">Duplicati</a>                              | 8200          | Backup tool for local files (used for docker mainly)              | `ghcr.io/imagegenius/duplicati:latest`          |
+| <a href="#glances">Glances</a>                                  | 61208         | Cross-platform monitoring tool                                    | `joweisberg/glances:latest`                     |
+| <a href="#node-exporter">Node-Exporter</a>                      | 9091          | Prometheus exporter for machine metrics                           | `prom/node-exporter:latest`                     |
+| <a href="#ouroboros">Ouroboros</a>                              | -             | Update containers by latest images                                | `pyouroboros/ouroboros:latest`                  |
+| <a href="#portainer-ce">Portainer-CE</a>                        | 9000,9443,8000 | Docker management tool (FREE Community Edition)                  | `portainer/portainer-ce:alpine`                 |
+| <a href="#tls-socket-proxy">TLS-Socket-Proxy</a>                | 2376          | A security-enhanced proxy for the Docker Socket by TLS            | `sjawhar/docker-socket-proxy:latest`            |
+| <a href="#webtty">WebTTY</a>                                    |  8818,8090    | Container WebTTY terminal access                                  | `wrfly/container-web-tty:0.1.10`                |
+| <a href="#whatsupdocker">WhatsUpDocker</a>                      | 3000          | Same as WatchTower but by UI and actions                          | `fmartinou/whats-up-docker:latest`              |
+| <a href="#yopass-memcached">Yopass-MemCached</a>                | 11211         | General-purpose caching system (mainly for YoPass)                | `memcached:alpine`                              |
 
 
 
 # LINKS AND PAGE ORGANISATION
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#dashmachine">DashMachine</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#homarr">Homarr</a>                          | 5050       | Links manager                                      | `rmountjoy/dashmachine:latest`         |
-| <a href="#shiori">Shiori</a>                                    | 18080      | A simple bookmarks manager                         | `ghcr.io/go-shiori/shiori:latest`      |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#dashmachine">DashMachine</a>                          | 5050          | Links manager                                                     | `rmountjoy/dashmachine:latest`                  |
+| <a href="#ha-fusion">HA-Fusion</a>                              | 8124          | A modern, easy-to-use and performant custom HA dashboard          | `ghcr.io/matt8707/ha-fusion:latest`             |
+| <a href="#linkding">LinkDing</a>                                | 7461          | A bookmark manager that you can host yourself                     | `sissbruecker/linkding:latest-alpine`           |
+| <a href="#shiori">Shiori</a>                                    | 18080         | A simple bookmarks manager                                        | `ghcr.io/go-shiori/shiori:latest`               |
 
 
 
 # MEDIA PLAYING
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#emby">Emby</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#jellyfin">Jellyfin</a>                                        | 8096       | Media server                                       | `emby/embyserver:latest`               |
-| <a href="#embystat">EmbyStat</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#jellystat">JellyStat</a>                                | 6555       | Stat web interface for Emby Media server           | `uping/embystat:beta-linux-x64`        |
-| <a href="#reiverr">Reiverr</a>                                  | 9494       | A single UI interacting with TMDB, Jellyfin, Radarr and Sonarr | `ghcr.io/aleksilassila/reiverr:latest` |
-| <a href="#jellyseerr">Jellyseerr</a>                            | 6556       | Managing requests for media library                | `fallenbagel/jellyseerr:latest`        |
-| <a href="#plex-media-server">Plex Media Server</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#jellyfin">Jellyfin</a>              | 32400      | Media server (standby)                             | `plexinc/pms-docker:latest`            |
-
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#emby">Emby</a>                                        | 8096          | Media server                                                      | `emby/embyserver:latest`                        |
+| <a href="#embystat">EmbyStat</a>                                | 6555          | Stat web interface for Emby Media server                          | `uping/embystat:beta-linux-x64`                 |
+| <a href="#jellystat">JellyStat</a>                              | 6555          | Stat web interface for Jellyfin Media server                      | `cyfershepard/jellystat:unstable`               |
+| <a href="#jellyseerr">Jellyseerr</a>                            | 6556          | Managing requests for media library                               | `fallenbagel/jellyseerr:latest`                 |
+| <a href="#plex-media-server">Plex Media Server</a>              | 32400         | Media server (standby-setup)                                      | `plexinc/pms-docker:latest`                     |
+| <a href="#reiverr">Reiverr</a>                                  | 9494          | A single UI interacting by TMDB, Jellyfin, Radarr and Sonarr      | `ghcr.io/aleksilassila/reiverr:latest`          |
 
 
 
 # NETWORKING AND SECURITY
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#adguard">AdGuard</a>  ----  Personally replaced with pfSense                                 | 80, 3000        | Network-wide software for blocking ads & tracking    | `adguard/adguardhome:latest`           |
-| <a href="#adguard">AdGuard-Sync</a>  ----  Personally replaced with pfSense                                 | 3006        | Synchronize AdGuardHome config to replica instances    | `ghcr.io/bakito/adguardhome-sync:latest`           |
-| <a href="#cloudflare-ddns">CloudFlare DDNS</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#cloudflared">Cloudflared</a>                  | -          | Dynamic DNS updater for CloudFlare Tunnel          | `oznu/cloudflare-ddns:latest`          |
-| <a href="#ddns-updater">DDNS Updater</a>  ----  Personally replaced with pfSense                           | 8002            | Dynamic DNS updater for mulit-DDNS services in one   | `qmcgaw/ddns-updater:latest`           |
-| <a href="#dhcpdns">DHCPdns</a> - OBSELETE, ISC ceased maintaining ISC DHCP since 2022, replaced by <a href="https://git.tamimology.com/tam/docker-containers#user-content-kea">Kea</a>                                 | 10000,67   | A DHCPdns with Webmin GUI to assign static IPs     | `mayankt/dhcpdns:latest`               |
-| <a href="#doku">Doku</a>                                        | 9090       | Monitor docker disk usage in a user-friendly manner | `amerkurev/doku:latest`               |
-| <a href="#duckdns">DuckDNS</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#ddns-updater">DDNS Updater</a>                                   | -          | Dynamic DNS updater for DuckDNS                    | `maksimstojkovic/duckdns:latest`       |
-| <a href="#fail2ban">Fail2Ban</a>                                | -          | Blockes IPs of Brute Force logins 'for Authelia'   | `crazymax/fail2ban:latest`             |
-| <a href="#goaccess">GoAccess</a>                                | 7880       | Parse proxy logs for Nginx Proxy Manager           | `xavierh/goaccess-for-nginxproxymanager:latest` |
-| <a href="#kea">Kea</a>  ----  Personally replaced with pfSense                                             | -               | A DHCP server to assign static IPs (no UI)           | `jonasal/kea-dhcp4:2`                  |
-| <a href="#lets-encrypt">Lets Encrypt</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#cloudflared">Cloudflared</a>                        | -          | Auto HTTPS certificate generator from Let's Encrypt | `maksimstojkovic/letsencrypt:latest`  |
-| <a href="#middlefinger">MiddleFinger</a>                        | 404        | Shows a dual 00100 hands for any unauthorised access | `modem7/middle-finger:dual`          |
-| <a href="#snipeit">SnipeIT</a>                                  | 1339       | Open source IT asset management system             | `snipe/snipe-it:latest-alpine`         |
-| <a href="#webdav">WebDAV</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#dufs">Dufs</a>                                    | 8888       | Access local files using WebDAV                     | `bytemark/webdav:latest`              |
-| <a href="#webnut">webNUT</a>                                    | 6543       | UPS network monitoring web ui                       | `edgd1er/webnut:latest`               |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#adguard">AdGuard</a>                                  | 80, 3000      | Network-wide software for blocking ads & tracking                 | `adguard/adguardhome:latest`                    |
+| <a href="#adguard">AdGuard-Sync</a>                             | 3006          | Synchronize AdGuardHome config to replica instances               | `ghcr.io/bakito/adguardhome-sync:latest`        |
+| <a href="#cloudflare-ddns">CloudFlare DDNS</a>                  | -             | Dynamic DNS updater for CloudFlare Tunnel                         | `oznu/cloudflare-ddns:latest`                   |
+| <a href="#ddns-updater">DDNS Updater</a>                        | 8002          | Dynamic DNS updater for mulit-DDNS services in one                | `qmcgaw/ddns-updater:latest`                    |
+| <a href="#dhcpdns">DHCPdns</a>                                  | 10000,67      | A DHCPdns by Webmin GUI to assign static IPs                      | `mayankt/dhcpdns:latest`                        |
+| <a href="#doku">Doku</a>                                        | 9090          | Monitor docker disk usage in a user-friendly manner               | `amerkurev/doku:latest`                         |
+| <a href="#duckdns">DuckDNS</a>                                  | -             | Dynamic DNS updater for DuckDNS                                   | `maksimstojkovic/duckdns:latest`                |
+| <a href="#fail2ban">Fail2Ban</a>                                | -             | Blockes IPs of Brute Force logins 'for Authelia'                  | `crazymax/fail2ban:latest`                      |
+| <a href="#goaccess">GoAccess</a>                                | 7880          | Parse proxy logs for Nginx Proxy Manager                          | `xavierh/goaccess-for-nginxproxymanager:latest` |
+| <a href="#kea">Kea</a>                                          | -             | A DHCP server to assign static IPs (no UI)                        | `jonasal/kea-dhcp4:3.1.7-alpine`                |
+| <a href="#lets-encrypt">Lets Encrypt</a>                        | -             | Auto HTTPS certificate generator from Let's Encrypt               | `maksimstojkovic/letsencrypt:latest`            |
+| <a href="#middlefinger">MiddleFinger</a>                        | 404           | Shows a dual 00100 hands for any unauthorised access              | `modem7/middle-finger:dual`                     |
+| <a href="#snipeit">SnipeIT</a>                                  | 1339          | Open source IT asset management system                            | `snipe/snipe-it:latest-alpine`                  |
+| <a href="#webdav">WebDAV</a>                                    | 8888          | Access local files using WebDAV                                   | `bytemark/webdav:latest`                        |
+| <a href="#webnut">webNUT</a>                                    | 6543          | UPS network monitoring web UI                                     | `edgd1er/webnut:latest`                         |
 
 
 
 # PROGRAMMING
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#appdaemon">AppDaemon</a>                              | 6060       | Sandbox py-execution environment for HomeAssistant | `acockburn/appdaemon:latest`           |
-| <a href="#it-tools">IT-Tools</a>                                | 5545       | Useful tools for developers working in IT          | `corentinth/it-tools:latest`           |
-| <a href="#visual-studio-code ">Visual Studio Code </a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#code-server">Code-Server</a>          | 8181       | Code editor                                        | `codercom/code-server:latest`          |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#appdaemon">AppDaemon</a>                              | 6060          | Sandbox py-execution environment for HomeAssistant                | `acockburn/appdaemon:latest`                    |
+| <a href="#code-server">Code-Server</a>                          | 8181          | Visual Studio Code editor                                         | `lscr.io/linuxserver/code-server:latest`        |
+| <a href="#it-tools">IT-Tools</a>                                | 5545          | Useful tools for developers working in IT                         | `corentinth/it-tools:latest`                    |
+| <a href="#jellysearch">JellySearch</a>                          | 7700          | A fast full-text search proxy for Jellyfin                        | `domistyle/jellysearch:latest`                  |
+| <a href="#visual-studio-code ">Visual Studio Code </a>          | 8181          | Code editor                                                       | `codercom/code-server:latest`                   |
 
 
 
 # SYSTEM MONITORING AND MANAGEMENT
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#home-panel">Home-Panel</a>                            | 8234       | Web frontend for controlling the home              | `timmo001/home-panel:latest`           |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#cloud-commander">Cloud Commander</a>                  | 4569          | A file manager for the web by console and editor                  | `coderaiser/cloudcmd:latest-alpine`             |
+| <a href="#home-panel">Home-Panel</a>                            | 8234          | Web frontend for controlling the home                             | `timmo001/home-panel:latest`                    |
+| <a href="#scrutiny">Scrutiny</a>                                | 6080          | WebUI for S.M.A.R.T monitoring                                    | `ghcr.io/analogj/scrutiny:master-omnibus`       |
 
 
 
 # SELF-HOSTED
 
-| Container                                                       | Port       | Description                                        | Docker Image                           |
-| :------------                                                   | :----      | :-------                                           | :---                                   |
-| <a href="#2fauth">2FAuth</a>                                    | 8010       | 2FAuth OTP Generator                               | `2fauth/2fauth:latest`                 |
-| <a href="#chatvault">Chatvault</a>                              | 8787       | Stores backups of WhatsApp conversations from various sources | `ghcr.io/vitormarcal/chatvault:latest` |
-| <a href="#collabora">Collabora</a>                              | 9988       | Editing documents in a browser from supported applications | `tiredofit/collabora-online:latest` |
-| <a href="#dufs">Dufs</a>                                           | 4688            | Utility file server that supports webdav             | `sigoden/dufs:latest`                  |
-| <a href="#flatnotes">FlatNotes</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#wiznote">WizNote</a>                              | 8053       | A database-less note-taking web app                | `dullage/flatnotes:latest`             |
-| <a href="#forgejo">Forgejo</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#gitea">Gitea</a>                                | 3332,223   | A self-hosted lightweight software forge           | `codeberg.org/forgejo/forgejo:1.21`    |
-| <a href="#joplin">Joplin</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#wiznote">WizNote</a>                                    | 2300       | Open source note taking and to-do application      | `joplin/server:latest`                 |
-| <a href="#kanboard">KanBoard</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#focalboard">FocalBoard</a>                                 | 4480,4443  | Kanban Board                                       | `kanboard/kanboard:latest`             |
-| <a href="#librex">LibreX</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#librey">LibreY</a>                                     | 8245       | Free privacy respecting meta search engine Google Alternative | `librex/librex:latest`      |
-| <a href="#libretranslate">LibreTranslate</a>                    | 7821       | Open Source Machine Translation API | `libretranslate/libretranslate:latest`      |
-| <a href="#lingva-translate">Lingva-Translate</a>                | 6455       | Alternative front-end for Google Translate  | `thedaviddelta/lingva-translate:latest`      |
-| <a href="#memos">Memos</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#wiznote">WizNote</a>                                         | 5230            | Capture and share your great thoughts                | `neosmemo/memos:latest`                |
-| <a href="#our-shopping-list">Our Shopping List</a>              | 8989       | A simple shared shopping list application          | `nanawel/our-shopping-list:latest`     |
-| <a href="#photoprism">Photoprism</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#immich">Immich</a>                            | 2342       | AI-Powered Photos App for the Decentralized Web    | `photoprism/photoprism:latest`         |
-| <a href="#photoview">Photoview</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#immich">Immich</a>                              | 7354       | A simple and user-friendly Photo Gallery           | `viktorstrate/photoview:2`             |
-| <a href="#pigallery">Pigallery</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#immich">Immich</a>                              | 9842       | A self-hosted directory-first photo gallery website | `bpatrik/pigallery2:latest`           |
-| <a href="#picoshare">PicoShare</a>                              | 8179       | Minimalist service to share files easily           | `mtlynch/picoshare:latest`             |
-| <a href="#piped-backend">Piped-Backend</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#invidious">Invidious</a>                      | -          | An advanced open-source privacy alternative to YouTube | `1337kavin/piped:latest`           |
-| <a href="#piped-frontend">Piped-Frontend</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#invidious">Invidious</a>                    | -          | A front UI for Piped-Backeend                      | `1337kavin/piped-frontend:latest`      |
-| <a href="#piped-nginx">Piped-Nginx</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#invidious">Invidious</a>                          | 7601       | Redirects all Youtube to Piped-Backend             | `nginx:mainline-alpine`                |
-| <a href="#piped-proxy">Piped-Proxy</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#invidious">Invidious</a>                          | -          | A proxy for Piped-Backend                          | `1337kavin/piped-proxy:latest`         |
-| <a href="#piwigo">Piwigo</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#immich">Immich</a>                                    | 8100       | Photos/videos managing with face recognition       | `ghcr.io/linuxserver/piwigo:latest`    |
-| <a href="#searxng">SearXNG</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#librey">LibreY</a>                                  | 5080       | Privacy-respecting, hackable metasearch engine     | `searxng/searxng:latest`               |
-| <a href="#vault">Vault</a>                                      | 8205       | A tool for secrets management                      | `hashicorp/vault:latest`               |
-| <a href="#xbackbone">xBackbone</a>  ----  Personally replaced with <a href="https://github.com/tamimology/docker-containers#projectsend">ProjectSend</a>                              | 8522,4443  | A lightweight file manager with full ShareX support | `lscr.io/linuxserver/xbackbone:latest` |
+| Container                                                       | Port          | Description                                                       | Docker Image                                    |
+| :------------                                                   | :------------ | :------------                                                     | :------------                                   |
+| <a href="#2fauth">2FAuth</a>                                    | 8010          | 2FAuth OTP Generator                                              | `2fauth/2fauth:latest`                          |
+| <a href="#chatvault">Chatvault</a>                              | 8787          | Stores backups of WhatsApp conversations from various sources     | `ghcr.io/vitormarcal/chatvault:latest`          |
+| <a href="#collabora">Collabora</a>                              | 9988          | Editing documents in a browser from supported applications        | `tiredofit/collabora-online:latest`             |
+| <a href="#dufs">Dufs</a>                                        | 4688          | Utility file server that supports webdav                          | `sigoden/dufs:latest`                           |
+| <a href="#endurain">Endurain</a>                                | 8888          | A Strava-like self-hosted fitness tracking service                | `ghcr.io/joaovitoriasilva/endurain:latest`      |
+| <a href="#etebase">EteBase</a>                                  | 3735          | Privacy respecting sync for contacts, calendars and tasks         | `victorrds/etesync:alpine`                      |
+| <a href="#etesync-Web">EteSync-Web</a>                          | 3736          | The EteSync web client served using the Caddy webserver           | `docker.io/pencilshavings/etesync-web:0.6.1`    |
+| <a href="#flatnotes">FlatNotes</a>                              | 8053          | A database-less note-taking web app                               | `dullage/flatnotes:latest`                      |
+| <a href="#focalboard">FocalBoard</a>                            | 5374          | A project management tool                                         | `mattermost/focalboard:latest`                  |
+| <a href="#forgejo">Forgejo</a>                                  | 3332,223      | A self-hosted lightweight software forge                          | `codeberg.org/forgejo/forgejo:1.21`             |
+| <a href="#gitea">Gitea</a>                                      | 222,3333      | Git by a cup of tea!                                              | `gitea/gitea:latest`                            |
+| <a href="#invidious">Invidious</a>                              | 7601          | An open source alternative front-end to YouTube                   | `quay.io/invidious/invidious:latest`            |
+| <a href="#jackett">Jackett</a>                                  | 9117          | A proxy server that translates queries from Sonarr and Radarr     | `lscr.io/linuxserver/jackett:latest`            |
+| <a href="#joplin">Joplin</a>                                    | 2300          | Open source note taking and to-do application                     | `joplin/server:latest`                          |
+| <a href="#kanboard">KanBoard</a>                                | 4480,4443     | Kanban Board                                                      | `kanboard/kanboard:latest`                      |
+| <a href="#librex">LibreX</a>                                    | 8245          | Free privacy respecting meta search engine Google Alternative     | `librex/librex:latest`                          |
+| <a href="#librey">LibreY</a>                                    | 8245          | Free privacy respecting meta search engine Google Alternative     | `ghcr.io/ahwxorg/librey:latest`                 |
+| <a href="#libretranslate">LibreTranslate</a>                    | 7821          | Open Source Machine Translation API                               | `libretranslate/libretranslate:latest`          |
+| <a href="#lidarr">Lidarr</a>                                    | 8686          | Automating music requests                                         | `lscr.io/linuxserver/lidarr:latest`             |
+| <a href="#lidatube">LidaTube</a>                                | 5005          | A tool for finding and fetching missing Lidarr albums via yt-dlp  | `thewicklowwolf/lidatube:latest`                |
+| <a href="#lingva-translate">Lingva-Translate</a>                | 6455          | Alternative front-end for Google Translate                        | `thedaviddelta/lingva-translate:latest`         |
+| <a href="#memos">Memos</a>                                      | 5230          | Capture and share your great thoughts                             | `neosmemo/memos:latest`                         |
+| <a href="#metube">MeTube</a>                                    | 8081          | Web GUI for youtube-dl by playlist support                        | `ghcr.io/alexta69/metube:latest`                |
+| <a href="#our-shopping-list">Our Shopping List</a>              | 8989          | A simple shared shopping list application                         | `nanawel/our-shopping-list:latest`              |
+| <a href="#photoprism">Photoprism</a>                            | 2342          | AI-Powered Photos App for the Decentralized Web                   | `photoprism/photoprism:latest`                  |
+| <a href="#photoview">Photoview</a>                              | 7354          | A simple and user-friendly Photo Gallery                          | `viktorstrate/photoview:2`                      |
+| <a href="#picoshare">PicoShare</a>                              | 8179          | Minimalist service to share files easily                          | `mtlynch/picoshare:latest`                      |
+| <a href="#pigallery">Pigallery</a>                              | 9842          | A self-hosted directory-first photo gallery website               | `bpatrik/pigallery2:latest`                     |
+| <a href="#piped-backend">Piped-Backend</a>                      | -             | An advanced open-source privacy alternative to YouTube            | `1337kavin/piped:latest`                        |
+| <a href="#piped-frontend">Piped-Frontend</a>                    | -             | A front UI for Piped-Backeend                                     | `1337kavin/piped-frontend:latest`               |
+| <a href="#piped-nginx">Piped-Nginx</a>                          | 7601          | Redirects all Youtube to Piped-Backend                            | `nginx:mainline-alpine`                         |
+| <a href="#piped-proxy">Piped-Proxy</a>                          | -             | A proxy for Piped-Backend                                         | `1337kavin/piped-proxy:latest`                  |
+| <a href="#piwigo">Piwigo</a>                                    | 8100          | Photos/videos managing by face recognition                        | `ghcr.io/linuxserver/piwigo:latest`             |
+| <a href="#searxng">SearXNG</a>                                  | 5080          | Privacy-respecting, hackable metasearch engine                    | `searxng/searxng:latest`                        |
+| <a href="#vault">Vault</a>                                      | 8205          | A tool for secrets management                                     | `hashicorp/vault:latest`                        |
+| <a href="#wiznote">WizNote</a>                                  | 5641,9269     | Save notes or share documents by your colleagues                  | `wiznote/wizserver:latest`                      |
+| <a href="#xbackbone">xBackbone</a>                              | 8522,4443     | A lightweight file manager by full ShareX support                 | `lscr.io/linuxserver/xbackbone:latest`          |
+| <a href="#yopass">YoPass</a>                                    | 8180          | Share Secrets Securely                                            | `jhaals/yopass:latest`                          |
 
 
 
-To begin with, I defined my own networks to use, that makes my setup easier for IP allocation of some containers.
+To begin by, I defined my own networks to use, that makes my setup easier for IP allocation of some containers.
 
 ```
 version: '3'
@@ -312,6 +342,8 @@ services:
 
 <details>
   <summary>
+      Replaced by Adguard installed in OPNSense, check my OPNSense repo <a href=https://github.com/tamimology/opnsense-config> from here </a>
+      <br></br>
   </summary>
 
 ```
@@ -342,7 +374,6 @@ services:
     security_opt:
       - no-new-privileges:true
     labels: 
-      autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     image: 'adguard/adguardhome:latest'
 ```
@@ -375,7 +406,6 @@ services:
       dockervlan:
         ipv4_address: $MACVLAN_NET.7 #must be in the same macvlan as original instance
     labels: 
-      autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     ports:
       - 3006:8080
@@ -384,6 +414,35 @@ services:
 </details>
 
 [🔼 Back to top](#networking-and-security)
+
+
+# Adminer
+
+<details>
+  <summary>
+  </summary>
+
+```
+  adminer:
+    container_name: adminer
+    restart: $RESTART_POLICY
+    hostname: adminer
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: mysql
+      ADMINER_DEFAULT_SERVER: mariadb #172.18.0.5 #mariadb ip address
+      ADMINER_DESIGN: 'nette' #'esterka'
+      ADMINER_PLUGINS: 'tables-filter tinymce frames'
+    ports:
+      - 3330:8080
+    networks:
+      my_bridge:
+    depends_on:
+      - mariadb
+    image: 'adminer:latest'
+```
+</details>
+
+[🔼 Back to top](#databases)
 
 
 # AlertManager
@@ -449,7 +508,7 @@ services:
     hostname: appdaemon
     environment:
         - HA_URL=http://$LOCAL_HOST:8123
-        - TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY2ZWMwZGI4YWE0MTYwODQ5NDYzMWEyNWY5ODAzMyIsImlhdCI6MTY4ODQ1ODUyMSwiZXhwIjoyMDAzODE4NTIxfQ.PEsdgMBC0Oc2Zl9Wl2VYPY2LGKzqvO02XxkkeQSnfL8
+        - TOKEN=$APPDAEMON_TOKEN
         - DASH_URL=http://$LOCAL_HOST:6060
     volumes:
         - $PERSIST/appdaemon:/conf'
@@ -528,7 +587,7 @@ services:
     container_name: cadvisor
     restart: $RESTART_POLICY
     hostname: cadvisor
-    volumes:
+    volumes: #Those corresponds to Synology DSM6 folders, check if using different OS
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /volume1/@docker:/var/lib/docker:ro # USE IN SSH TO GET IT ( docker info | grep "Docker Root Dir:" )
@@ -624,8 +683,6 @@ services:
       timeout: 45s
       interval: 10s
       retries: 10
-    labels: 
-      autoheal: $AUTOHEAL_RESTART
     image: 'postgres:alpine'
 ```
 </details>
@@ -636,6 +693,7 @@ services:
 # CheckMK
 <details>
   <summary>
+    Check logs for initial login Username/Password
   </summary>
 
 ```
@@ -658,9 +716,42 @@ services:
 [🔼 Back to top](#docker-related)
 
 
+# Cloud Commander
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#filebrowser">FileBrowser</a> instead
+      <br></br>
+  </summary>
+
+```
+  cloudcmd:
+    container_name: cloudcmd
+    restart: $RESTART_POLICY
+    hostname: cloudcmd
+    environment:
+      NAME: "My Server"
+    volumes:
+      - /volume1/:/volume1
+      - /volumeUSB1/:/USB1
+      # - /:/mnt/fs
+    working_dir: /volume1
+    tty: true
+    ports:
+      - 4569:8000
+    networks:
+      my_bridge:
+    image: 'coderaiser/cloudcmd:latest-alpine'
+```
+</details>
+
+[🔼 Back to top](#system-monitoring-and-management)
+
+
 # CloudFlare-DDNS
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#cloudflared">Cloudflared</a> instead, unless you have multi-dns servers, including cloudflare and others
+      <br></br>
   </summary>
 
 ```
@@ -670,7 +761,7 @@ services:
     hostname: cloudflare-ddns
     environment:
       - API_KEY=$DDNS_AUTOUPDATE_TOKEN
-      - ZONE=tamimology.com
+      - ZONE=$CF_ZONE
       - PROXIED=true
       - PUID=$PUID
       - PGID=$PGID
@@ -683,6 +774,39 @@ services:
 [🔼 Back to top](#networking-and-security)
 
 
+# Code-Server
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#vscodium-web">VSCodium-Web</a> instead
+      <br></br>
+  </summary>
+
+```
+  code-server:
+    container_name: code-server
+    restart: $RESTART_POLICY
+    hostname: code-server
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+      - SUDO_PASSWORD_HASH=$PASSWORD_HASH #https://www.symbionts.de/tools/hash/sha256-hash-salt-generator.html
+      - PROXY_DOMAIN=code-server.$DOMAINNAME
+      - DEFAULT_WORKSPACE=/home/coder/project #optional
+    volumes:
+      - $PERSIST/code-server:/config
+      - $PERSIST/homeassistant:/home/coder/project:rw
+    ports:
+      - 8181:8443
+    networks:
+      my_bridge:
+    image: 'lscr.io/linuxserver/code-server:latest'
+```
+</details>
+
+[🔼 Back to top](#programming)
+
+
 # Collabora
 <details>
   <summary>
@@ -692,7 +816,7 @@ services:
   collabora:
     image: 'tiredofit/collabora-online:latest'
     container_name: collabora
-    # hostname: online.example.com
+    hostname: collabora
     cap_add:
       - MKNOD
       - NET_ADMIN
@@ -723,6 +847,8 @@ services:
 # Container-Mon
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#monocker">Monocker</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -736,7 +862,7 @@ services:
       - DOCKER_HOST=$DOCKER_HOST
       - CONTAINERMON_CRON=*/1 * * * * # every 1 min
       - CONTAINERMON_FAIL_LIMIT=1
-      - CONTAINERMON_USE_LABELS=false #If true will only monitor containers with the label containermon.enable=true set
+      - CONTAINERMON_USE_LABELS=false #If true will only monitor containers by the label containermon.enable=true set
       - CONTAINERMON_NOTIFICATION_URL=pushover://shoutrrr:$PUSHOVER_DOCKERHEALTH_API@$PUSHOVER_USER_KEY
       - CONTAINERMON_NOTIFY_HEALTHY=true
       - CONTAINERMON_CHECK_STOPPED=false
@@ -752,6 +878,8 @@ services:
 # DashMachine
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#homarr">Homarr</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -800,6 +928,8 @@ services:
 # DeUnHealth
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#auto-heal">Autoheal</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -825,6 +955,8 @@ services:
 # DDNS-Updater
 <details>
   <summary>
+      Replaced by built-in plugin in OPNSense, check my OPNSense repo <a href=https://github.com/tamimology/opnsense-config> from here </a>
+      <br></br>
   </summary>
 
 ```
@@ -862,8 +994,6 @@ services:
       - 8002:8000/tcp
     user: $PUID:$PGID
     labels: 
-      autoheal: $AUTOHEAL_RESTART
-      autoheal.stop.timeout: 30
       monocker.enable: $MONOCKER_ENABLE
     image: 'qmcgaw/ddns-updater:latest'
 ```
@@ -875,6 +1005,8 @@ services:
 # DHCPdns
 <details>
   <summary>
+      OBSELETE, ISC ceased maintaining ISC DHCP since 2022, replaced by <a href="https://git.tamimology.com/tam/docker-containers#user-content-kea">Kea</a>
+      <br></br>
   </summary>
 
 ```
@@ -930,6 +1062,44 @@ services:
 [🔼 Back to top](#docker-related)
 
 
+# Docker-Volume-Backup
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#backrest">Backrest</a> instead
+      <br></br>
+  </summary>
+
+```
+  docker-volume-backup:
+    container_name: docker-volume-backup
+    restart: $RESTART_POLICY
+    hostname: docker-volume-backup
+    environment:
+      # - BACKUP_CRON_EXPRESSION=15 03 15 * * #At 03:15 on day-of-month 15
+      - BACKUP_CRON_EXPRESSION=50 23 * * * #At 03:15 on day-of-month 15
+      - BACKUP_COMPRESSION=gz
+      - GZIP_PARALLELISM=3
+      - BACKUP_FILENAME=backup-%Y-%m-%dT%H-%M-%S.{{ .Extension }}
+      - BACKUP_SOURCES=/backup
+      - BACKUP_ARCHIVE=/archive
+      - DOCKER_HOST=$DOCKER_HOST
+      - NOTIFICATION_URLS=pushover://shoutrrr:$PUSHOVER_DOCKER_BACKUP_API@$PUSHOVER_USER_KEY
+      - NOTIFICATION_LEVEL=info
+    volumes:
+      - $PERSIST:/backup:ro
+      - $BACKUPS/docker-volume-backup/juliet:/archive
+      - $TIME_ZONE:/etc/timezone:ro
+      - $LOCAL_TIME:/etc/localtime:ro
+      - $PERSIST/docker-volume-backup/notification.template:/etc/dockervolumebackup/notifications.d/01.template
+    networks:
+      my_bridge:
+    image: 'offen/docker-volume-backup:latest'
+```
+</details>
+
+[🔼 Back to top](#docker-related)
+
+
 # Doku
 <details>
   <summary>
@@ -945,6 +1115,8 @@ services:
     volumes:
         # - $DOCKER_SOCKET:/var/run/docker.sock:ro
         - /:/hostroot:ro
+    networks:
+      my_bridge:
     ports:
         - 9090:9090
     image: 'amerkurev/doku:latest'
@@ -954,9 +1126,50 @@ services:
 [🔼 Back to top](#networking-and-security)
 
 
+# Dozzle
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#dockhand">DockHand</a> instead
+      <br></br>
+  </summary>
+
+```
+  dozzle:
+    container_name: dozzle
+    restart: $RESTART_POLICY
+    hostname: dozzle
+    environment:
+      DOCKER_HOST: $DOCKER_HOST
+      DOZZLE_LEVEL: info
+      DOZZLE_TAILSIZE: 300
+      DOZZLE_FILTER: "status=running"
+      DOZZLE_USERNAME: admin
+      DOZZLE_PASSWORD: $DOZZLE_PWD
+      # DOZZLE_FILTER: "label=log_me" # limits logs displayed to containers by this label
+    # volumes:
+    #   - $DOCKER_SOCKET:/var/run/docker.sock
+    ports:
+      - 9900:8080
+    networks:
+      my_bridge:
+    healthcheck:
+      test: [ "CMD", "/dozzle", "healthcheck" ]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    image: 'amir20/dozzle:latest'
+```
+</details>
+
+[🔼 Back to top](#docker-related)
+
+
 # DuckDNS
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#ddns-updater">DDNS Updater</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1003,9 +1216,54 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
+# Duplicati
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#backrest">Backrest</a> instead
+      <br></br>
+  </summary>
+
+```
+  duplicati:
+    container_name: duplicati
+    restart: $ALWAYS_ON_POLICY
+    hostname: duplicati
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+      # https://forum.duplicati.com/t/how-to-configure-automatic-email-notifications-via-gmail-for-every-backup-job/869/19
+      - CLI_ARGS= --send-mail-url=smtp://$GM_HOST:587/?starttls=when-available
+                  --send-mail-any-operation=true
+                  --send-mail-subject=Duplicati %PARSEDRESULT%, %OPERATIONNAME% report for %backup-name%
+                  --send-mail-to=$PUSHOVER_EMAIL_DUPLICATI
+                  --send-mail-username=$GM_USER
+                  --send-mail-password=$GM_PSW
+                  --send-mail-from=My Server <$GM_USER>
+                  --send-mail-level=Success,Error
+      - PRIVILEGED=true
+    volumes:
+      - $PERSIST/duplicati:/config
+      - $PERSIST/:/source/docker
+      - $BACKUPS/:/source/backups
+    ports:
+      - 8200:8200
+    networks:
+      my_bridge:
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE
+    image: 'ghcr.io/imagegenius/duplicati:latest'
+```
+</details>
+
+[🔼 Back to top](#docker-related)
+
+
 # Emby
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#jellyfin">Jellyfin</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1043,6 +1301,8 @@ services:
 # EmbyStat
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#tracearr">Tracearr</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1065,6 +1325,139 @@ services:
 </details>
 
 [🔼 Back to top](#media-playing)
+
+
+# Endurain
+<details>
+  <summary>
+  </summary>
+
+```
+  endurain:
+    container_name: endurain
+    restart: $RESTART_POLICY
+    hostname: endurain
+    environment:
+      - TZ=$TZ
+      - UID=$PUID
+      - GID=$PGID
+      - DB_TYPE=postgres
+      - DB_HOST=endurain-postgres
+      - DB_PORT=5432
+      - DB_USER=endurain
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_DATABASE=endurain
+      - SECRET_KEY=$ENDURAIN-SECRET_KEY # openssl rand -hex 32
+      - GEOCODES_MAPS_API=$GEOCODES_MAPS_API
+      - ENDURAIN_HOST=https://sports.tamimology.com #http://192.168.1.10:8888 
+      - BEHIND_PROXY=true #false 
+      - FERNET_KEY=$FERNET_KEY_SECRET
+    volumes:
+      - $PERSIST/endurain/data:/app/backend/data
+      - $PERSIST/endurain/logs:/app/backend/logs
+    ports:
+      - 8888:8080
+    networks:
+      my_bridge:
+    depends_on:
+      endurain-postgres:
+        condition: service_healthy
+      # jaeger: {} # optional
+    image: 'ghcr.io/joaovitoriasilva/endurain:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Endurain-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  endurain-postgres:
+    container_name: endurain-postgres
+    hostname: endurain-postgres
+    restart: $RESTART_POLICY
+    environment:
+      POSTGRES_DB: endurain
+      POSTGRES_USER: endurain
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - $PERSIST/endurain/db:/var/lib/postgresql/data:rw
+    networks:
+      my_bridge:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "endurain", "-U", "endurain"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    image: 'postgres:16-alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
+# EteBase
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#next-cloud">NextCloud</a> instead
+      <br></br>
+  </summary>
+
+```
+  etebase:
+    container_name: etebase
+    restart: $ALWAYS_ON_POLICY
+    hostname: etebase
+    environment:
+      SERVER: http
+      SECRET_FILE: /data/credentials # https://django-secret-key-generator.netlify.app/
+      ALLOWED_HOSTS: "etebase.$DOMAINNAME, 192.168.1.10"
+      SUPER_USER: admin
+      SUPER_PASS: $ETESYNC_PWD
+      # AUTO_SIGNUP: true
+      TIME_ZONE: $TZ
+    volumes:
+      - $PERSIST/etebase:/data:rw
+    ports:
+      - 3735:3735
+    networks:
+      my_bridge:
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE
+    image: 'victorrds/etesync:alpine'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Etesync-Web
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#next-cloud">NextCloud</a> instead
+      <br></br>
+  </summary>
+
+```
+  etesync-web:
+    container_name: etesync-web
+    restart: $RESTART_POLICY
+    hostname: etesync-web
+    environment:
+      - ETEBASE_URL=http://192.168.1.10:3735
+    networks:
+      my_bridge:
+    ports:
+      - 3736:80
+    image: 'docker.io/pencilshavings/etesync-web:0.6.1'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
 
 
 # Fail2Ban
@@ -1112,6 +1505,8 @@ services:
 # FlatNotes
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#next-cloud">NextCloud</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1140,9 +1535,79 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
+# FocalBoard
+<details>
+  <summary>
+  </summary>
+
+```
+  focalboard:
+    container_name: focalboard
+    restart: $RESTART_POLICY
+    hostname: focalboard
+    environment:
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=8000
+      - VIRTUAL_PROTO=http
+    volumes:
+      - $PERSIST/focalboard/data:/opt/focalboard/data:rw
+      - $PERSIST/focalboard/config/config.json:/opt/focalboard/config.json
+    ports:
+      - 5374:8000
+    networks:
+      my_bridge:
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      focalboard-postgres:
+        condition: service_healthy
+    image: 'mattermost/focalboard:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# FocalBoard-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  focalboard-postgres:
+    container_name: focalboard-postgres
+    restart: $RESTART_POLICY
+    hostname: focalboard-postgres
+    environment:
+      - TZ=$TZ
+      - POSTGRES_DB=focalboard
+      - POSTGRES_USER=focalboard
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - $PERSIST/focalboard/db:/var/lib/postgresql/data:rw
+    networks:
+      my_bridge:
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "focalboard", "-U", "focalboard"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    user: $PUID:$PGID
+    image: 'postgres:alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
 # Forgejo
 <details>
   <summary>
+      Prefer using <a href="https://git.tamimology.com/tam/docker-containers#user-content-gitea">Gitea</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1169,6 +1634,40 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
+# Gitea
+<details>
+  <summary>
+  </summary>
+
+```
+  gitea:
+    container_name: gitea
+    restart: $RESTART_POLICY
+    hostname: gitea
+    environment:
+      - USER_UID=$PUID
+      - USER_GID=$PGID
+      - ROOT_URL=https://gitea.$DOMAINNAME
+    volumes:
+      - $PERSIST/gitea:/data
+      - $LOCAL_TIME:/etc/localtime:ro
+      - $TIME_ZONE:/etc/TZ:ro
+    ports:
+      - 3333:3000
+      - 222:22
+    networks:
+      my_bridge:
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE
+    image: 'gitea/gitea:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
 # Glances
 <details>
   <summary>
@@ -1186,6 +1685,8 @@ services:
       - $DOCKER_SOCKET:/var/run/docker.sock:ro
       - $PERSIST/glances:/glances/conf
     pid: host
+    networks:
+      my_bridge:
     ports:
       - 61208:61208
     image: 'joweisberg/glances:latest'
@@ -1235,7 +1736,7 @@ services:
     container_name: grafana
     restart: $RESTART_POLICY
     hostname: grafana
-    environment: #You can do this with any of the configuration options in https://github.com/grafana/grafana/blob/main/conf/defaults.ini by setting GF_<SectionName>_<KeyName>__FILE to the path of the file holding the secret.
+    environment: #You can do this by any of the configuration options in https://github.com/grafana/grafana/blob/main/conf/defaults.ini by setting GF_<SectionName>_<KeyName>__FILE to the path of the file holding the secret.
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -1262,6 +1763,32 @@ services:
 [🔼 Back to top](#databases)
 
 
+# HA-Fusion
+<details>
+  <summary>
+  </summary>
+
+```
+  ha-fusion:
+    container_name: ha-fusion
+    restart: $RESTART_POLICY
+    hostname: ha-fusion
+    environment:
+      TZ: $TZ
+      HASS_URL: http://192.168.1.10:8123
+    volumes:
+      - $PERSIST/ha-fusion:/app/data
+    ports:
+      - 8124:5050
+    networks:
+      my_bridge:
+    image: 'ghcr.io/matt8707/ha-fusion:latest'
+```
+</details>
+
+[🔼 Back to top](#links-and-page-organisation)
+
+
 # Home-Panel
 <details>
   <summary>
@@ -1285,6 +1812,123 @@ services:
 [🔼 Back to top](#system-monitoring-and-management)
 
 
+# Invidious
+<details>
+  <summary>
+      Prefer using the <a href="https://github.com/libre-tube/LibreTube/">LibreTube Android App</a> instead
+      <br></br>
+  </summary>
+
+```
+  invidious:
+    container_name: invidious
+    restart: $ALWAYS_ON_POLICY
+    hostname: invidious
+    environment:
+      # Please read the following file for a comprehensive list of all available
+      # configuration options and their associated syntax:
+      # https://github.com/iv-org/invidious/blob/master/config/config.example.yml
+      INVIDIOUS_CONFIG: |
+        db:
+          dbname: invidious
+          user: invidious
+          password: $DB_PASSWORD
+          host: invidious-postgres
+          port: 5432
+        check_tables: true
+        external_port: 443
+        domain: inv.$DOMAINNAME
+        https_only: true
+        log_level: Warn
+        popular_enabled: false
+        statistics_enabled: true
+        registration_enabled: false
+        login_enabled: true
+        captcha_enabled: true
+        jobs:
+          clear_expired_items:
+            enable: true
+          refresh_channels:
+            enable: true
+          refresh_feeds:
+            enable: true
+        captcha_api_url: https://api.anti-captcha.com
+        captcha_key: $ANTICAPTCHA_API
+        admins: ["$GM_USER"]
+        banner: "MyTube"
+        hmac_key: $APP_KEY
+        default_user_preferences:
+          locale: en-US
+          region: AU
+          captions: ["English", "English (auto-generated)", "Arabic"]
+          dark_mode: "dark"
+          feed_menu: ["Trending", "Subscriptions", "Playlists"]
+          player_style: invidious
+          default_home: Trending
+          related_videos: true
+          autoplay: true
+          quality: dash
+          quality_dash: auto
+          volume: 50
+          save_player_pos: true
+    ports:
+      - 7602:3000
+    networks:
+      my_bridge:
+    user: $PUID:$PGID
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: wget -nv --tries=1 --spider http://127.0.0.1:3000/api/v1/comments/jNQXAC9IVRw || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 2
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE
+    depends_on:
+      invidious-postgres:
+        condition: service_started
+    image: 'quay.io/invidious/invidious:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Invidious-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  invidious-postgres:
+    container_name: invidious-postgres
+    restart: $ALWAYS_ON_POLICY
+    hostname: invidious-postgres
+    volumes:
+      - $PERSIST/invidious/db:/var/lib/postgresql/data
+    environment:
+      TZ: $TZ
+      POSTGRES_DB: invidious
+      POSTGRES_USER: invidious
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    networks:
+      my_bridge:
+    security_opt:
+      - no-new-privileges:true
+    user: $PUID:$PGID
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "invidious", "-U", "invidious"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    image: 'postgres:alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
 # IT-Tools
 <details>
   <summary>
@@ -1306,9 +1950,78 @@ services:
 [🔼 Back to top](#programming)
 
 
+# Jackett
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#transmission">Transmission</a> instead
+      <br></br>
+  </summary>
+
+```
+  jackett:
+    container_name: jackett
+    restart: $RESTART_POLICY
+    hostname: jackett
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+      - AUTO_UPDATE=true #optional
+      # - RUN_OPTS= #optional
+    volumes:
+      - $PERSIST/jackett:/config
+      - $DOWNLOADS:/downloads
+    ports:
+      - 9117:9117
+    networks:
+      my_bridge:
+    image: 'lscr.io/linuxserver/jackett:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# JellySearch
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#JellySearch-MeiliSearch">JellySearch-MeiliSearch</a> and used its Jellyfin <a href=https://github.com/arnesacnussem/jellyfin-plugin-meilisearch/>plugin</a href> instead
+      <br></br>
+  </summary>
+
+```
+  jellysearch:
+    container_name: jellysearch
+    restart: $RESTART_POLICY
+    hostname: jellysearch
+    environment:
+      JELLYFIN_URL: http://192.168.1.10:8096
+      MEILI_URL: http://192.168.1.10:7700
+      MEILI_MASTER_KEY: $JELLYSEARCH_MEILI_KEY
+      INDEX_CRON: "0 0 0/2 ? * * *" # every 2 hours
+    volumes:
+      - $PERSIST/jellyfin/config:/config:ro
+    networks:
+      my_bridge:
+    depends_on:
+      jellysearch-meilisearch:
+        condition: service_started
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.jellysearch.loadbalancer.server.port=5000
+      - traefik.http.routers.jellysearch.rule=Host(`jellyfin.$DOMAINNAME.com`) && (QueryRegexp(`searchTerm`, `(.*?)`) || QueryRegexp(`SearchTerm`, `(.*?)`))
+    image: 'domistyle/jellysearch:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
 # Jellyseerr
 <details>
   <summary>
+      Repo was changed to <a href="https://github.com/tamimology/docker-containers#seerr">Seerr</a>
+      <br></br>
   </summary>
 
 ```
@@ -1332,9 +2045,80 @@ services:
 [🔼 Back to top](#media-playing)
 
 
+# JellyStat
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#tracearr">Tracearr</a>  instead
+      <br></br>
+  </summary>
+
+```
+  jellystat:
+    container_name: jellystat
+    restart: $ALWAYS_ON_POLICY
+    hostname: jellystat
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_IP: jellystat-postgres
+      POSTGRES_PORT: 5432
+      JWT_SECRET: $APP_KEY
+    volumes:
+      - $PERSIST/jellyfin/stat/data:/app/backend/backup-data
+    ports:
+      - 6555:3000 #Server Port
+      - 6556:3004 #Websocket port
+    networks:
+      my_bridge:
+    depends_on:
+      jellystat-postgres:
+        condition: service_healthy
+    image: 'cyfershepard/jellystat:latest'
+```
+</details>
+
+[🔼 Back to top](#media-playing)
+
+
+# Jellystat-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  jellystat-postgres:
+    container_name: jellystat-postgres
+    restart: $ALWAYS_ON_POLICY
+    hostname: jellystat-postgres
+    volumes:
+      - $PERSIST/jellyfin/stat/db:/var/lib/postgresql/data
+    environment:
+      TZ: $TZ
+      POSTGRES_DB: jfstat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    networks:
+      my_bridge:
+    security_opt:
+      - no-new-privileges:true
+    user: $PUID:$PGID
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "jfstat", "-U", "postgres"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    image: 'postgres:alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
 # Joplin
 <details>
   <summary>
+      The default email is admin@localhost and the default password is admin
+      <br></br>
   </summary>
 
 ```
@@ -1392,6 +2176,8 @@ services:
 # KanBoard
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#focalboard">FocalBoard</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1420,6 +2206,8 @@ services:
 # Kea
 <details>
   <summary>
+      Replaced by built-in plugin in OPNSense, check my OPNSense repo <a href=https://github.com/tamimology/opnsense-config> from here </a>
+      <br></br>
   </summary>
 
 ```
@@ -1436,7 +2224,7 @@ services:
       - $PERSIST/kea/logs:/kea/logs
     labels: 
       monocker.enable: $MONOCKER_ENABLE
-    image: 'jonasal/kea-dhcp4:2' # do not use the alpine as it does not support routing to Adguard
+    image: 'jonasal/kea-dhcp4:3.1.7-alpine'
 ```
 </details>
 
@@ -1446,6 +2234,8 @@ services:
 # Lets Encrypt
 <details>
   <summary>
+      Required if using <a href="https://git.tamimology.com/tam/docker-containers#user-content-ddns-updater">DDNS Updater</a> DDNS Updater </a> or <a href="https://git.tamimology.com/tam/docker-containers#user-content-duckdns">DuckDNS</a> DuckDNS </a>
+      <br></br>
   </summary>
 
 ```
@@ -1507,6 +2297,8 @@ services:
 # LibreX
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#degoog">DeGoog</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1537,6 +2329,169 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
+# LibreY
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#degoog">DeGoog</a> instead
+      <br></br>
+  </summary>
+
+```
+  librey:
+    container_name: librey
+    restart: $ALWAYS_ON_POLICY
+    hostname: librey
+    environment:
+      - CONFIG_GOOGLE_DOMAIN=com
+      - CONFIG_LANGUAGE=en
+      - CONFIG_NUMBER_OF_RESULTS=10
+      - CONFIG_INVIDIOUS_INSTANCE=https://inv.$DOMAINNAME
+      - CONFIG_DISABLE_BITTORRENT_SEARCH=false
+      - CONFIG_HIDDEN_SERVICE_SEARCH=false #if true it hides the TOR tab
+      - CONFIG_INSTANCE_FALLBACK=true
+      - CONFIG_RATE_LIMIT_COOLDOWN=25
+      - CONFIG_CACHE_TIME=20
+      - CONFIG_TEXT_SEARCH_ENGINE=google
+      - CURLOPT_PROXY_ENABLED=false
+    volumes:
+      - $PERSIST/librey/nginx:/var/log/nginx
+      - $PERSIST/librey/logs:/var/log/php7
+    ports:
+      - 8245:8080
+    networks:
+      my_bridge:
+    image: 'ghcr.io/ahwxorg/librey:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Lidarr
+<details>
+  <summary>
+  </summary>
+
+```
+  lidarr:
+    container_name: lidarr
+    restart: $RESTART_POLICY
+    hostname: lidarr
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - $PERSIST/lidarr/config:/config
+      - $DOWNLOADS/YouTube/audio:/downloads #optional
+      - $MEDIA_PATH/Music:/music #optional
+    ports:
+      - 8686:8686
+    networks:
+      my_bridge:
+    depends_on:
+      prowlarr:
+          condition: service_started
+      transmission:
+          condition: service_started
+      lidarr-postgres:
+          condition: service_healthy
+    image: 'lscr.io/linuxserver/lidarr:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Lidarr-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  lidarr-postgres:
+    container_name: lidarr-postgres
+    hostname: lidarr-postgres
+    restart: $RESTART_POLICY
+    environment:
+      POSTGRES_DB: lidarr
+      POSTGRES_USER: lidarruser
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - $PERSIST/lidarr/db:/var/lib/postgresql:rw
+    networks:
+      my_bridge:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "lidarr", "-U", "lidarruser"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    image: 'postgres:18-alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
+# LidaTube
+<details>
+  <summary>
+  </summary>
+
+```
+  lidatube:
+    container_name: lidatube
+    hostname: lidatube
+    restart: $RESTART_POLICY
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - lidarr_address=http://192.168.1.11:8686/
+      - lidarr_api_key=$lidarr_api_key
+      - secondary_search=YTDLP # YTS or YTDLP
+      - preferred_codec=mp3
+      - attempt_lidarr_import=true
+    volumes:
+      - $PERSIST/lidatube/config:/lidatube/config
+      - $PERSIST/lidatube/downloads:/lidatube/downloads
+      - $TIME_ZONE:/etc/localtime:ro
+    ports:
+      - 5005:5000
+    networks:
+      my_bridge:
+    image: 'thewicklowwolf/lidatube:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# LinkDing
+<details>
+  <summary>
+  </summary>
+
+```
+  linkding:
+    container_name: linkding
+    hostname: linkding
+    restart: $RESTART_POLICY
+    environment:
+      - LD_SUPERUSER_NAME=admin
+      - LD_SUPERUSER_PASSWORD=$LINKDING_PWD
+    volumes:
+      - $PERSIST/linkding:/etc/linkding/data
+    ports:
+      - 7461:9090
+    networks:
+      my_bridge:
+    image: 'sissbruecker/linkding:latest-alpine'
+```
+</details>
+
+[🔼 Back to top](#links-and-page-organisation)
+
+
 # Lingva-Translate
 <details>
   <summary>
@@ -1565,9 +2520,100 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
+# Maybe
+<details>
+  <summary>
+  </summary>
+
+```
+  maybe:
+    container_name: maybe
+    hostname: maybe
+    restart: $RESTART_POLICY
+    environment:
+      SELF_HOSTED: "true"
+      SYNTH_API_KEY: $SYNTH_API_KEY_MAYBE
+      RAILS_FORCE_SSL: "false"
+      RAILS_ASSUME_SSL: "false"
+      SMTP_ADDRESS: $GM_HOST
+      SMTP_USERNAME: $GM_USER
+      SMTP_PASSWORD: $GM_PSW
+      SMTP_PORT: $GM_PORT
+      SMTP_TLS_ENABLED: "true"
+      APP_DOMAIN: maybe.$DOMAINNAME
+      REQUIRE_INVITE_CODE: "false"
+      EMAIL_SENDER: $GM_USER
+      GOOD_JOB_EXECUTION_MODE: async
+      SECRET_KEY_BASE: $APP_KEY
+      DB_HOST: maybe-postgres
+      POSTGRES_DB: maybedb
+      POSTGRES_USER: maybe
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      UPGRADES_ENABLED: "false"
+      UPGRADES_MODE: "manual"
+      UPGRADES_TARGET: "release"
+      GITHUB_REPO_OWNER: "maybe-finance"
+      GITHUB_REPO_NAME: "maybe"
+      GITHUB_REPO_BRANCH: "main"
+    volumes:
+      - $PERSIST/maybe:/rails/storage
+    networks:
+      my_bridge:
+    ports:
+      - 3030:3000
+    depends_on:
+      maybe-postgres:
+        condition: service_healthy
+    healthcheck:
+        test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/3000' || exit 1
+        interval: 10s
+        timeout: 5s
+        retries: 3
+        start_period: 90s
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE 
+    image: 'ghcr.io/maybe-finance/maybe:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Maybe-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  maybe-postgres:
+    container_name: maybe-postgres
+    hostname: maybe-postgres
+    restart: $RESTART_POLICY
+    environment:
+      POSTGRES_DB: maybedb
+      POSTGRES_USER: maybe
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - $PERSIST/maybe/db:/var/lib/postgresql/data:rw
+    networks:
+      my_bridge:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "paperless", "-U", "paperless"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    image: 'postgres:16-alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
+
+
 # Memos
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#next-cloud">NextCloud</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1582,9 +2628,51 @@ services:
     networks:
       my_bridge:
     labels: 
-      # autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     image: 'neosmemo/memos:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# MeTube
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#ytptube">YTPTube</a> instead
+      <br></br>
+      <br></br>
+      Android app can be downloaded from <a href=https://github.com/1RandomDev/metube-android>here</a href>
+      <br></br>
+      Supported sites list for download can be found <a href=https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md>here</a href>
+      <br></br>
+  </summary>
+
+```
+  metube:
+    container_name: metube
+    restart: $RESTART_POLICY
+    hostname: metube
+    volumes:
+      - $DOWNLOADS/YouTube:/downloads
+      - $DOWNLOADS/YouTube/cookies:/cookies
+    environment:
+      - UID=$PUID
+      - GID=$PGID
+      - DOWNLOAD_DIR=/downloads/video
+      - AUDIO_DOWNLOAD_DIR=/downloads/audio
+      - DEFAULT_THEME=dark
+      - URL_PREFIX=/
+      - YTDL_OPTIONS={"cookiefile":"/cookies/cookies.txt"} #,"writesubtitles":true,"subtitleslangs":["en","-live_chat"],"postprocessors":[{"key":"Exec","exec_cmd":"chmod 0664","when":"after_move"},{"key":"FFmpegEmbedSubtitle","already_have_subtitle":false},{"key":"FFmpegMetadata","add_chapters":true}]}
+    ports:
+      - 8081:8081
+    networks:
+      my_bridge:
+    # healthcheck:
+    #  test: curl -f http://localhost:8081/ || exit 1
+    labels: 
+      monocker.enable: $MONOCKER_ENABLE
+    image: 'ghcr.io/alexta69/metube:  latest'
 ```
 </details>
 
@@ -1659,8 +2747,6 @@ services:
     networks:
       my_bridge:
     working_dir: /usr/src/node-red
-    labels:
-      - autoheal=$AUTOHEAL_RESTART
     image: 'nodered/node-red:latest'
 ```
 </details>
@@ -1671,6 +2757,8 @@ services:
 # Nginx Proxy Manager
 <details>
   <summary>
+      Replaced by Cloudflared Tunnel, check my repo <a href=https://github.com/tamimology/docker-cloudflare-setup> from here </a>
+      <br></br>
   </summary>
 
 ```
@@ -1766,6 +2854,8 @@ services:
 # Ouroboros
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#watchtower">WatchTower</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1798,6 +2888,8 @@ services:
 # phpMyAdmin
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/unused-docker-containers#adminer">Adminer</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1853,6 +2945,8 @@ services:
 # Photoprism
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#immich">Immich</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1874,8 +2968,8 @@ services:
       - $MEDIA_PATH/Photos:/photoprism/originals:rw
 #     - /volume1/docker/photoprism/family:/photoprism/originals/family:rw               # *Additional* media folders can be mounted like this
     environment:
-      PHOTOPRISM_ADMIN_USER: tam
-      PHOTOPRISM_ADMIN_PASSWORD: ts*JhcmL&5zc^5
+      PHOTOPRISM_ADMIN_USER: admin
+      PHOTOPRISM_ADMIN_PASSWORD: $PP_PWD
       PHOTOPRISM_UID: $PUID
       PHOTOPRISM_GID: $PGID
       PHOTOPRISM_AUTH_MODE: password
@@ -1928,6 +3022,8 @@ services:
 # Photoview
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#immich">Immich</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -1967,6 +3063,8 @@ services:
 # Photoview-Postgress
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#immich">Immich</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2009,7 +3107,7 @@ services:
     hostname: picoshare
     environment:
       - PORT=3001
-      - PS_SHARED_SECRET=$PASSWD # Change to any password
+      - PS_SHARED_SECRET=$PASSWD
     volumes:
       - $PERSIST/picoshare:/data
     ports:
@@ -2027,6 +3125,8 @@ services:
 # Pigallery
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#immich">Immich</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2059,42 +3159,6 @@ services:
 [🔼 Back to top](#self-hosted)
 
 
-# Piped-Postgres
-<details>
-  <summary>
-  </summary>
-
-```
-  piped-postgres:
-    container_name: piped-postgres
-    hostname: piped-postgres
-    restart: $RESTART_POLICY
-    volumes:
-      - $PERSIST/piped/db:/var/lib/postgresql/data
-    environment:
-      TZ: $TZ
-      POSTGRES_DB: piped
-      POSTGRES_USER: piped
-      POSTGRES_PASSWORD: $DB_PASSWORD
-    networks:
-      my_bridge:
-    security_opt:
-      - no-new-privileges:true
-    healthcheck:
-      test: ["CMD", "pg_isready", "-q", "-d", "piped", "-U", "piped"]
-      timeout: 45s
-      interval: 10s
-      retries: 10
-    labels: 
-      autoheal: $AUTOHEAL_RESTART
-    user: $PUID:$PGID
-    image: 'postgres:alpine'
-```
-</details>
-
-[🔼 Back to top](#databases)
-
-
 # Piped-Backend
 <details>
   <summary>
@@ -2112,7 +3176,6 @@ services:
     healthcheck:
       test: stat /etc/passwd || exit 1
     labels: 
-      autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     security_opt:
       - no-new-privileges:true
@@ -2129,6 +3192,8 @@ services:
 # Piped-Frontend
 <details>
   <summary>
+      Prefer using the <a href="https://github.com/libre-tube/LibreTube/">LibreTube Android App</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2147,7 +3212,6 @@ services:
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80
     labels: 
-      autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     image: '1337kavin/piped-frontend:latest'
 ```
@@ -2182,7 +3246,6 @@ services:
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80
     labels: 
-      autoheal: $AUTOHEAL_RESTART
       monocker.enable: $MONOCKER_ENABLE
     depends_on:
       piped-backend:
@@ -2196,6 +3259,40 @@ services:
 </details>
 
 [🔼 Back to top](#self-hosted)
+
+
+# Piped-Postgres
+<details>
+  <summary>
+  </summary>
+
+```
+  piped-postgres:
+    container_name: piped-postgres
+    hostname: piped-postgres
+    restart: $RESTART_POLICY
+    volumes:
+      - $PERSIST/piped/db:/var/lib/postgresql/data
+    environment:
+      TZ: $TZ
+      POSTGRES_DB: piped
+      POSTGRES_USER: piped
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    networks:
+      my_bridge:
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "piped", "-U", "piped"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    user: $PUID:$PGID
+    image: 'postgres:alpine'
+```
+</details>
+
+[🔼 Back to top](#databases)
 
 
 # Piped-Proxy
@@ -2227,6 +3324,8 @@ services:
 # Piwigo
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#immich">Immich</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2251,8 +3350,6 @@ services:
       - 8100:80
     networks:
       my_bridge:
-    labels:
-      - autoheal=$AUTOHEAL_RESTART
     depends_on:
       - piwigodb
     image: 'ghcr.io/linuxserver/piwigo:latest'
@@ -2326,6 +3423,8 @@ services:
 # Plex Media Server
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#jellyfin">Jellyfin</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2352,8 +3451,6 @@ services:
     #network_mode: "host"
     networks:
       my_bridge:
-    labels:
-      - autoheal=$AUTOHEAL_RESTART
     image: 'plexinc/pms-docker:latest'
 ```
 </details>
@@ -2364,20 +3461,22 @@ services:
 # Portainer-CE
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#dockhand">DockHand</a> instead
+      <br></br>
   </summary>
 
 ```
-  portainer:
+  portainer-ce:
     container_name: portainer-ce
     restart: $ALWAYS_ON_POLICY
-    hostname: portainer
+    hostname: portainer-ce
     privileged: true
     command: -H $DOCKER_HOST --tlsskipverify
     environment:
       DOCKER_HOST: $SOCKET
     volumes:
       - $DOCKER_SOCKET:/var/run/docker.sock
-      - $PERSIST/portainer:/data
+      - $PERSIST/portainer-ce:/data
     ports:
       - 8000:8000/tcp
       - 9000:9000/tcp
@@ -2394,6 +3493,8 @@ services:
 # Reiverr
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#seerr">Seerr</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2414,9 +3515,42 @@ services:
 [🔼 Back to top](#media-playing)
 
 
+# Scrutiny
+<details>
+  <summary>
+  </summary>
+
+```
+  scrutiny:
+    container_name: scrutiny
+    restart: $RESTART_POLICY
+    hostname: scrutiny
+    privileged: true
+    volumes:
+      - $PERSIST/scrutiny:/opt/scrutiny/config
+      - /run/udev:/run/udev:ro
+      - $PERSIST/scrutiny/influxdb:/opt/scrutiny/influxdb
+    ports:
+      - 6080:8080
+      - 8086:8086
+    networks:
+      my_bridge:
+    cap_add:
+      - SYS_RAWIO
+    devices:
+      - /dev:/dev
+    image: 'ghcr.io/analogj/scrutiny:master-omnibus'
+```
+</details>
+
+[🔼 Back to top](#system-monitoring-and-management)
+
+
 # SearXNG
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#degoog">DeGoog</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2425,7 +3559,7 @@ services:
     restart: $ALWAYS_ON_POLICY
     hostname: searxng
     environment:
-      - SEARXNG_BASE_URL=https://search.$DOMAINNAME/
+      - SEARXNG_BASE_URL=https://searxng.$DOMAINNAME/
     volumes:
       - $PERSIST/searxng:/etc/searxng:rw
     ports:
@@ -2454,6 +3588,8 @@ services:
 # Shiori
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#karakeep">Karakeep</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2484,7 +3620,6 @@ services:
 
 ```
   snipeit:
-    image: 'snipe/snipe-it:latest-alpine' #https://hub.docker.com/r/snipe/snipe-it/
     container_name: snipeit
     restart: on-failure:5
     healthcheck:
@@ -2498,7 +3633,7 @@ services:
     environment:
       - TZ=$TZ
       - APP_URL=http://192.168.1.10:1339
-      - APP_KEY=base64:jtww95XJZi2u97Nou8a9SMI2CZg6BOvfdUc7yF9y4bw=
+      - APP_KEY=base64:$SNIPEIT_APP_KEY
       - MYSQL_PORT_3306_TCP_ADDR=mariadb
       - MYSQL_PORT_3306_TCP_PORT=3306
       - MYSQL_DATABASE=snipe
@@ -2509,12 +3644,13 @@ services:
       - MAIL_PORT_587_TCP_ADDR=$GM_HOST
       - MAIL_PORT_587_TCP_PORT=$GM_PORT
       - MAIL_ENV_FROM_ADDR=$GM_USER
-      - MAIL_ENV_FROM_NAME=Tamimology Server
+      - MAIL_ENV_FROM_NAME=My Server
       - MAIL_ENV_ENCRYPTION=SSL
       - MAIL_ENV_USERNAME=$GM_USER
       - MAIL_ENV_PASSWORD=$GM_PSW
     ports:
       - 1339:80
+    image: 'snipe/snipe-it:latest-alpine'
 ```
 </details>
 
@@ -2524,6 +3660,8 @@ services:
 # TLS-Socket-Proxy
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#socket-proxy">Docker Socket Proxy</a href> instead
+      <br></br>
   </summary>
   
 ```
@@ -2538,6 +3676,8 @@ services:
       - $DOCKER_SOCKET:/var/run/docker.sock
     ports:
       - 2376:2376
+    networks:
+      my_bridge:
     command: ["-dd", "-lmlocal2"]
     image: 'sjawhar/docker-socket-proxy:latest'
 ```
@@ -2555,6 +3695,7 @@ services:
   vault:
     restart: on-failure:5
     container_name: vault
+    hostname: vault
     environment:
       VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
     volumes:
@@ -2563,7 +3704,6 @@ services:
       - $PERSIST/vault/config:/vault/config:rw
       - $PERSIST/vault/plugins:/vault/plugins:rw
       - $LOCAL_TIME:/etc/localtime:ro
-    # hostname: vault
     # mem_limit: 512m
     # cpu_shares: 768
     ports:
@@ -2587,6 +3727,8 @@ services:
 # Visual Studio Code
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#vscodium-web">VSCodium-Web</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2612,34 +3754,11 @@ services:
 [🔼 Back to top](#programming)
 
 
-# Container-WebTTY
-<details>
-  <summary>
-  </summary>
-
-```
-  webtty:
-    container_name: container-webtty
-    restart: $RESTART_POLICY
-    hostname: webtty
-    environment:
-      - DOCKER_HOST=$SOCKET
-    # volumes:
-    #   - $DOCKER_SOCKET:/var/run/docker.sock
-    ports:
-      - 8818:8080
-    networks:
-      my_bridge:
-    image: 'wrfly/container-web-tty:0.1.10' #latest'
-```
-</details>
-
-[🔼 Back to top](#docker-related)
-
-
 # WhatsUpDocker
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#watchtower">WatchTower</a href> instead
+      <br></br>
   </summary>
 
 ```
@@ -2678,6 +3797,8 @@ services:
 # WebDAV
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#dufs">Dufs</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2707,6 +3828,8 @@ services:
 # webNUT
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#peanut">PeaNUT</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2727,6 +3850,34 @@ services:
 </details>
 
 [🔼 Back to top](#networking-and-security)
+
+
+# WebTTY
+<details>
+  <summary>
+  </summary>
+
+```
+  webtty:
+    container_name: container-webtty
+    restart: $RESTART_POLICY
+    hostname: webtty
+    environment:
+      - DOCKER_HOST=$SOCKET
+      # - WEB_TTY_GRPC_PORT=8090
+      # - WEB_TTY_GRPC_AUTH=$WEBTTY_PWD
+    # volumes:
+    #   - $DOCKER_SOCKET:/var/run/docker.sock
+    ports:
+      - 8818:8080
+    #  - 8090:8090
+    networks:
+      my_bridge:
+    image: 'wrfly/container-web-tty:0.1.10' #latest'
+```
+</details>
+
+[🔼 Back to top](#docker-related)
 
 
 # WeTTY
@@ -2763,9 +3914,36 @@ services:
 [🔼 Back to top](#docker-related)
 
 
+# WizNote
+<details>
+  <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#next-cloud">NextCloud</a> instead
+      <br></br>
+  </summary>
+  wiznote:
+    container_name: wiznote
+    restart: $RESTART_POLICY
+    hostname: wiznote
+    volumes:
+      - $PERSIST/wiznote:/wiz/storage
+      - $LOCAL_TIME:/etc/localtime
+    ports:
+      - 5641:80
+      - 9269:9269/udp
+    networks:
+      my_bridge:
+    image: 'wiznote/wizserver:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
 # xBackbone
 <details>
   <summary>
+      Prefer using <a href="https://github.com/tamimology/docker-containers#projectsend">ProjectSend</a> instead
+      <br></br>
   </summary>
 
 ```
@@ -2789,3 +3967,50 @@ services:
 </details>
 
 [🔼 Back to top](#self-hosted)
+
+
+# YoPass
+<details>
+  <summary>
+  </summary>
+  
+```
+  yopass:
+    container_name: yopass
+    restart: $RESTART_POLICY
+    hostname: yopass
+    ports:
+      - 8180:80
+    networks:
+      my_bridge:
+    depends_on:
+      - yopass-memcached
+    command: --memcached=memcached:11211 --port 80
+    links:
+      - yopass-memcached:memcached
+    image: 'jhaals/yopass:latest'
+```
+</details>
+
+[🔼 Back to top](#self-hosted)
+
+
+# Yopass-MemCached
+<details>
+  <summary>
+  </summary>
+
+```
+  yopass-memcached:
+    container_name: yopass-memcached
+    restart: $RESTART_POLICY
+    hostname: yopass-memcached
+    expose:
+      - 11211
+    networks:
+      my_bridge:
+    image: 'memcached:alpine'
+```
+</details>
+
+[🔼 Back to top](#docker-related)
